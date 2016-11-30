@@ -1,0 +1,20 @@
+version: '2'
+services:
+  proxy:
+    image: jwilder/nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - 80:80
+  iron:
+    image: iron/functions
+    privileged: true
+    environment:
+      VIRTUAL_HOST: iron.dev.local
+      VIRTUAL_PORT: 8080
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 8080:8080
+    depends_on:
+      - proxy
